@@ -1,0 +1,16 @@
+{
+  "object": {
+    "type": "https://www.w3.org/ns/activitystreams#Note",
+    "data": {
+      "https://www.w3.org/ns/activitystreams#content": "Empty object test"
+    }
+  },
+  "intent": {
+    "action": "https://www.w3.org/ns/activitystreams#Create"
+  },
+  "authority": {},
+  "lifetime": {},
+  "result": {
+    "expects": "https://www.w3.org/ns/activitystreams#Note"
+  }
+}

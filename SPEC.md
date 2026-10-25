@@ -24,6 +24,8 @@ No sixth top-level member is permitted by this profile.
 
 `result` MUST be an object containing `expects`, which MUST be an absolute URI string.
 
+Wherever an object is required, an empty JSON object `{}` is valid unless required members are specified. A JSON array `[]` is never a JSON object. In particular, `authority: {}` and `lifetime: {}` are valid; arrays in either field MUST be rejected.
+
 ## 2. Capability matching
 
 A handler MUST match capabilities by the exact triple:

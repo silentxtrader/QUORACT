@@ -2,7 +2,8 @@
   "positive": [
     {"file": "vectors/positive/schemaorg-calendar.json", "binding_mode": "external-vocabulary", "result_type": "https://schema.org/Event", "preserve_object_data": true},
     {"file": "vectors/positive/activitystreams-note.json", "binding_mode": "external-vocabulary", "result_type": "https://www.w3.org/ns/activitystreams#Note", "preserve_object_data": true},
-    {"file": "vectors/positive/v07-calendar.json", "binding_mode": "direct-schema-id", "result_type": "https://example.org/semantic/calendar/created/1", "requires_result_key": "event_id"}
+    {"file": "vectors/positive/v07-calendar.json", "binding_mode": "direct-schema-id", "result_type": "https://example.org/semantic/calendar/created/1", "requires_result_key": "event_id"},
+    {"file": "vectors/positive/empty-opaque-objects.json", "binding_mode": "external-vocabulary", "result_type": "https://www.w3.org/ns/activitystreams#Note", "preserve_object_data": true}
   ],
   "negative": [
     {"file": "vectors/negative/sixth-field.json"},
@@ -11,6 +12,7 @@
     {"file": "vectors/negative/http-alias.json"},
     {"file": "vectors/negative/fragment-alias.json"},
     {"file": "vectors/negative/invalid-calendar-data.json"},
-    {"file": "vectors/negative/mismatched-result.json"}
+    {"file": "vectors/negative/mismatched-result.json"},
+    {"file": "vectors/negative/array-instead-of-object.json"}
   ]
 }
