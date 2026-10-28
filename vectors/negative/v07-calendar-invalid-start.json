@@ -1,0 +1,14 @@
+{
+  "object": {
+    "type": "https://example.org/semantic/calendar/event/1",
+    "data": {
+      "title": "Independent Node meeting",
+      "start": "2026-13-11T09:00:00Z",
+      "end": "2026-09-11T09:30:00Z"
+    }
+  },
+  "intent": {"action": "https://example.org/semantic/calendar/create/1"},
+  "authority": {"scheme": "test.none", "scope": ["https://example.org/semantic/calendar/create/1"]},
+  "lifetime": {"max_uses": 1},
+  "result": {"expects": "https://example.org/semantic/calendar/created/1"}
+}

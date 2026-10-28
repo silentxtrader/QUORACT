@@ -12,6 +12,10 @@
     {"file": "vectors/negative/http-alias.json"},
     {"file": "vectors/negative/fragment-alias.json"},
     {"file": "vectors/negative/invalid-calendar-data.json"},
+    {"file": "vectors/negative/schemaorg-calendar-invalid-start.json"},
+    {"file": "vectors/negative/schemaorg-calendar-invalid-end.json"},
+    {"file": "vectors/negative/v07-calendar-invalid-start.json"},
+    {"file": "vectors/negative/v07-calendar-invalid-end.json"},
     {"file": "vectors/negative/mismatched-result.json"},
     {"file": "vectors/negative/array-instead-of-object.json"}
   ]

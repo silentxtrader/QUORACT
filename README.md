@@ -33,7 +33,20 @@ Run the public tests:
 python3 conformance.py --handler /absolute/path/to/handler
 ```
 
-The kit includes 4 valid and 8 invalid test cases. There is no reference handler here.
+The kit includes 4 valid and 12 invalid test cases. There is no reference handler here.
+Calendar negatives independently exercise invalid `start` and `end` date-times in both
+calendar bindings: an out-of-range month and a missing UTC offset, respectively.
+Each date-time case otherwise matches its positive calendar fixture.
+
+Run the maintainer checks for vector registration, isolated invalid date-times, and
+runner acceptance/rejection behavior with Python's standard library:
+
+```sh
+python3 -B -m unittest discover -s tests -v
+```
+
+These checks use fixture process results, not a handler implementation. They do not
+replace running `conformance.py` against an independent handler.
 
 ## Scope
 

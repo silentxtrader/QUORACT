@@ -1,0 +1,14 @@
+{
+  "object": {
+    "type": "https://schema.org/Event",
+    "data": {
+      "https://schema.org/name": "Protocol interoperability review",
+      "https://schema.org/startDate": "2026-09-15T09:00:00+02:00",
+      "https://schema.org/endDate": "2026-09-15T09:30:00"
+    }
+  },
+  "intent": {"action": "https://schema.org/ScheduleAction"},
+  "authority": {"scheme": "fixture", "scope": ["execute"]},
+  "lifetime": {"expires_at": "2026-10-01T00:00:00Z", "max_uses": 1},
+  "result": {"expects": "https://schema.org/Event"}
+}
