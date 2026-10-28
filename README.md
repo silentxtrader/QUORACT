@@ -33,6 +33,20 @@ Run the public tests:
 python3 conformance.py --handler /absolute/path/to/handler
 ```
 
+To limit each handler invocation, optionally add `--timeout-seconds 5` (any
+positive finite number of seconds up to 86400, or 24 hours). Larger values
+are rejected before starting the handler to avoid platform timer overflow; this
+is a conservative runner input limit, not a protocol deadline. The default has no timeout. A timed-out
+handler fails the runner, including for negative vectors; it does not count as
+successful rejection. This limit applies to the direct handler process, not a
+sandbox for its descendants, and does not enforce the request's `lifetime`.
+
+Run the runner's regression tests with Python's standard library:
+
+```sh
+python3 -m unittest discover -s tests -v
+```
+
 The kit includes 4 valid and 8 invalid test cases. There is no reference handler here.
 
 ## Scope

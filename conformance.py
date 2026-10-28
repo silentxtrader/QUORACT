@@ -1,16 +1,32 @@
 #!/usr/bin/env python3
 from __future__ import annotations
-import argparse, json, subprocess, sys
+import argparse, json, math, subprocess, sys
 from pathlib import Path
 from urllib.parse import urlparse
 
 ROOT = Path(__file__).resolve().parent
+# Conservative CLI budget limit, not a protocol lifetime or a default timeout.
+MAX_TIMEOUT_SECONDS = 86400
 
 def absolute_uri(value: object) -> bool:
     return isinstance(value, str) and bool(urlparse(value).scheme)
 
-def call(handler: Path, vector: Path):
-    return subprocess.run([str(handler), '--envelope', str(vector)], text=True, capture_output=True)
+def positive_timeout(value: str) -> float:
+    try:
+        seconds = float(value)
+    except ValueError:
+        raise argparse.ArgumentTypeError(f'timeout must be a positive finite number at most {MAX_TIMEOUT_SECONDS}') from None
+    if not math.isfinite(seconds) or not 0 < seconds <= MAX_TIMEOUT_SECONDS:
+        raise argparse.ArgumentTypeError(f'timeout must be a positive finite number at most {MAX_TIMEOUT_SECONDS}')
+    return seconds
+
+
+def call(handler: Path, vector: Path, timeout_seconds: float | None = None):
+    try:
+        return subprocess.run([str(handler), '--envelope', str(vector)],
+                              text=True, capture_output=True, timeout=timeout_seconds)
+    except subprocess.TimeoutExpired:
+        fail(f"handler timed out after {timeout_seconds:g} seconds: {vector}")
 
 def fail(msg: str):
     raise AssertionError(msg)
@@ -18,6 +34,8 @@ def fail(msg: str):
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument('--handler', required=True)
+    ap.add_argument('--timeout-seconds', type=positive_timeout,
+                    help='optional per-vector handler timeout in seconds, 0 < value <= 86400 (default: no timeout)')
     args = ap.parse_args()
     handler = Path(args.handler).resolve()
     expectations = json.loads((ROOT / 'expectations.json').read_text())
@@ -26,7 +44,8 @@ def main() -> int:
     for case in expectations['positive']:
         vector = ROOT / case['file']
         request = json.loads(vector.read_text())
-        p = call(handler, vector)
+        p = (call(handler, vector) if args.timeout_seconds is None
+             else call(handler, vector, args.timeout_seconds))
         if p.returncode != 0:
             fail(f"positive vector rejected: {case['file']}\nstdout={p.stdout}\nstderr={p.stderr}")
         try:
@@ -53,7 +72,8 @@ def main() -> int:
 
     for case in expectations['negative']:
         vector = ROOT / case['file']
-        p = call(handler, vector)
+        p = (call(handler, vector) if args.timeout_seconds is None
+             else call(handler, vector, args.timeout_seconds))
         if p.returncode == 0:
             fail(f"negative vector accepted: {case['file']}\nstdout={p.stdout}")
         passed += 1
