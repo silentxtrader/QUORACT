@@ -7,7 +7,12 @@ from urllib.parse import urlparse
 ROOT = Path(__file__).resolve().parent
 
 def absolute_uri(value: object) -> bool:
-    return isinstance(value, str) and bool(urlparse(value).scheme)
+    if not isinstance(value, str):
+        return False
+    # urlparse can strip controls; validate the original identifier first.
+    if any(ord(char) <= 0x20 or ord(char) == 0x7f for char in value):
+        return False
+    return bool(urlparse(value).scheme)
 
 def call(handler: Path, vector: Path):
     return subprocess.run([str(handler), '--envelope', str(vector)], text=True, capture_output=True)
